@@ -29,7 +29,7 @@
           </mat-autocomplete>
         </mat-form-field>
         <span *ngIf="(i === nodeNumber-1) ? true: false">
-          <button (click)="increment('node')" class="btn btn-success ml-3" mat-mini-fab>
+          <button (click)="increment('node',i)" class="btn btn-success ml-3" mat-mini-fab>
             <mat-icon><span class="material-icons-round">
               add_circle
               </span></mat-icon>
@@ -48,9 +48,10 @@
   </div>
   <div *ngSwitchCase="'2'">
     <form [formGroup]="edgeGroup" class="example-form">
+      <h1>CONNECT EDGES</h1>
       <div *ngFor='let keys of edgeKeys ;let i= index'>
         <h1>{{edgeOptions[i]}}</h1>
-        <form formArrayName="{{keys}}" *ngFor='let loop1 of counter(edgeNumber) ;let j= index'>
+        <form formArrayName="{{keys}}" *ngFor='let loop1 of counter(edgeNumber[i]) ;let j= index'>
           <mat-form-field appearance="outline">
             <mat-label>Edge</mat-label>
             <input matInput placeholder="add edges"
@@ -61,13 +62,13 @@
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
-          <span *ngIf="(j >= edgeNumber-1) ? true: false">
-            <button (click)="increment(keys)" class="btn btn-success ml-3" mat-mini-fab>
+          <span *ngIf="(j >= edgeNumber[i]-1) ? true: false">
+            <button (click)="increment(keys,i)" class="btn btn-success ml-3" mat-mini-fab>
               <mat-icon><span class="material-icons-round">
                 add_circle
                 </span></mat-icon>
             </button>
-            <button *ngIf="(j === 0) ? false: true" (click)="decrement(keys,j)" class="btn btn-danger ml-2" mat-mini-fab >
+            <button *ngIf="(j === 0) ? false: true" (click)="decrement(keys,i)" class="btn btn-danger ml-2" mat-mini-fab >
               <mat-icon><span class="material-icons-outlined">
                 remove_circle
                 </span></mat-icon>
