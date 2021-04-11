@@ -1,9 +1,100 @@
-<mat-form-field appearance="outline">
-  <mat-label>Outline form field</mat-label>
-  <input matInput placeholder="Placeholder">
-  <mat-hint>Hint</mat-hint>
-</mat-form-field>
+
 
 <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
+
+
+<div align="center" class="container mt-5" [ngSwitch]="num">
+  <div *ngSwitchCase="'1'">
+    <form [formGroup]="formGroup" class="example-form">
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Subject</mat-label>
+        <input matInput placeholder="select subject" formControlName="subject"
+        [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions1 | async" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+<!------------------------------------------------------------------------------------------------>
+      <form formArrayName="nodeFormArray" *ngFor='let loop1 of counter(nodeNumber) ;let i= index'>
+        <mat-form-field appearance="outline">
+          <mat-label>Node</mat-label>
+          <input matInput placeholder="add node"
+          [formControlName]="i" [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions2 | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <span *ngIf="(i === nodeNumber-1) ? true: false">
+          <button (click)="increment('node')" class="btn btn-success ml-3" mat-mini-fab>
+            <mat-icon><span class="material-icons-round">
+              add_circle
+              </span></mat-icon>
+          </button>
+          <button *ngIf="(i === 0) ? false: true" (click)="decrement('node',i)" class="btn btn-danger ml-2" mat-mini-fab >
+            <mat-icon><span class="material-icons-outlined">
+              remove_circle
+              </span></mat-icon>
+          </button>
+        </span>
+      </form>
+    </form>
+    <div align="right">
+      <button class="btn btn-dark mb-2 mr-2" (click)="addEdges()" mat-button>create edges</button>
+    </div>
+  </div>
+  <div *ngSwitchCase="'2'">
+    <form [formGroup]="edgeGroup" class="example-form">
+      <div *ngFor='let keys of edgeKeys ;let i= index'>
+        <h1>{{edgeOptions[i]}}</h1>
+        <form formArrayName="{{keys}}" *ngFor='let loop1 of counter(edgeNumber) ;let j= index'>
+          <mat-form-field appearance="outline">
+            <mat-label>Edge</mat-label>
+            <input matInput placeholder="add edges"
+            [formControlName]="j" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of filteredOptions3 | async" [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <span *ngIf="(j >= edgeNumber-1) ? true: false">
+            <button (click)="increment(keys)" class="btn btn-success ml-3" mat-mini-fab>
+              <mat-icon><span class="material-icons-round">
+                add_circle
+                </span></mat-icon>
+            </button>
+            <button *ngIf="(j === 0) ? false: true" (click)="decrement(keys,j)" class="btn btn-danger ml-2" mat-mini-fab >
+              <mat-icon><span class="material-icons-outlined">
+                remove_circle
+                </span></mat-icon>
+            </button>
+          </span>
+        </form>
+      </div>
+    </form>
+    <div align="right">
+      <button class="btn btn-dark mb-2 mr-2" (click)="editNodes()" mat-button>Edit Nodes</button>
+      <button class="btn btn-dark mb-2" (click)="viewGraph()" mat-button>View Graph</button>
+    </div>
+  </div>
+  <div *ngSwitchCase="'3'">
+    <div align="left">
+      <button class="btn btn-dark mb-2 mr-2" (click)="editGraph()" mat-button>Edit Graph</button>
+      <button class="btn btn-dark mb-2" mat-button>Save Graph</button>
+    </div>
+    <div echarts [options]="options" class="demo-chart"></div>
+  </div>
+</div>
+
+
+
+
+
+
+
 
 <router-outlet></router-outlet>
